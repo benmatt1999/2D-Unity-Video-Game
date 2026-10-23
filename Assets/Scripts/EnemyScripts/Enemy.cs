@@ -4,14 +4,8 @@ using UnityEngine;
 public class Enemy : MonoBehaviour
 {
     [SerializeField] private Animator anim;
-    [SerializeField] protected int health;
+    [SerializeField] protected int health = 1;
     protected bool isDead = false;
-
-
-    void Start()
-    {
-        
-    }
 
     void Update()
     {
@@ -39,7 +33,7 @@ public class Enemy : MonoBehaviour
         isDead = true;
         if (anim != null)
         {
-            anim.SetTrigger("DieTrigger");
+            anim.SetTrigger("DeathTrigger");
         }
     }
 }
