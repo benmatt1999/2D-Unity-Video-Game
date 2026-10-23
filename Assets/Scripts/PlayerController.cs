@@ -7,27 +7,20 @@ public class PlayerController : MonoBehaviour
     [Header("Movement Settings")]
     [SerializeField] private float moveSpeed = 5f;
     [SerializeField] private float jumpForce = 8f;
-    [SerializeField] private float maxSlope = 45f;
+    [SerializeField] private float airAcceleration = 20f;
+    [SerializeField] private float airDeceleration = 8f;
     [SerializeField] private float normalGravity = 3f;
     [SerializeField] private Transform attackPoint;
-    [SerializeField] private Vector2 attackSize = new Vector2(1f, 1.2f);
+    [SerializeField] private Vector2 attackSize = new Vector2(0.8f, 1.2f);
     [SerializeField] private LayerMask enemyLayer;
-
-    [SerializeField] private float snapDistance = 0.3f;
-    [SerializeField] private float skin = 0.02f;
 
     public Animator animator;
 
-    [Header("Ground Check Settings")]
-    public LayerMask groundLayer;
-    private RaycastHit2D groundHit;
-    private bool isGrounded;
-    private bool wasGrounded;
     private bool hasAirJumped;
     private bool canAirJump;
-
     private bool isJumping;
-    private readonly RaycastHit2D[] castResults = new RaycastHit2D[4];
+
+    private GroundCheck groundCheck;
 
     [SerializeField] private Rigidbody2D rb;
     [SerializeField] private SpriteRenderer spriteRenderer;
@@ -35,8 +28,11 @@ public class PlayerController : MonoBehaviour
 
     private float horizontalInput;
 
+    private void Awake()
+    {
+        groundCheck = GetComponent<GroundCheck>();
+    }
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -55,7 +51,7 @@ public class PlayerController : MonoBehaviour
 
         Debug.DrawRay(transform.position, Vector2.down * (playerHalfHeight + 0.2f), Color.red);
 
-        if (Input.GetButtonDown("Jump") && (GetIsGrounded() || canAirJump))
+        if (Input.GetButtonDown("Jump") && (groundCheck.IsGrounded || canAirJump))
         {
             Jump();
             if (!hasAirJumped)
@@ -74,9 +70,7 @@ public class PlayerController : MonoBehaviour
 
     void FixedUpdate()
     {
-        GetIsGrounded();
-
-        rb.linearVelocity = new Vector2(horizontalInput * moveSpeed, rb.linearVelocity.y);
+        animator.SetBool("isGrounded", groundCheck.GetIsGrounded(isJumping));
 
         if (isJumping && rb.linearVelocity.y <= 0)
         {
@@ -85,16 +79,16 @@ public class PlayerController : MonoBehaviour
         }
 
         // Air Jumping Logic
-        if (isGrounded)
+        if (groundCheck.IsGrounded)
         {
             canAirJump = false;
             hasAirJumped = false;
-        } else if (!isGrounded && !hasAirJumped)
+        } else if (!groundCheck.IsGrounded && !hasAirJumped)
         {
             canAirJump = true;
         }
 
-        if (isGrounded && !isJumping)
+        if (groundCheck.IsGrounded && !isJumping)
         {
             rb.gravityScale = 0;
 
@@ -104,47 +98,20 @@ public class PlayerController : MonoBehaviour
             }
             else
             {
-                Vector2 slopeDir = -Vector2.Perpendicular(groundHit.normal).normalized;
+                Vector2 slopeDir = -Vector2.Perpendicular(groundCheck.GroundNormal).normalized;
                 rb.linearVelocity = slopeDir * horizontalInput * moveSpeed;
             }
         }
         else
         {
             rb.gravityScale = normalGravity;
-            rb.linearVelocity = new Vector2(horizontalInput * moveSpeed, rb.linearVelocity.y);
+
+            float targetX = horizontalInput * moveSpeed;
+            float rate = horizontalInput != 0 ? airAcceleration : airDeceleration;
+            float newX = Mathf.MoveTowards(rb.linearVelocity.x, targetX, rate * Time.fixedDeltaTime);
+
+            rb.linearVelocity = new Vector2(newX, rb.linearVelocity.y);
         }
-    }
-
-    private bool GetIsGrounded()
-    {
-        wasGrounded = isGrounded;
-
-        ContactFilter2D filter = new ContactFilter2D();
-        filter.SetLayerMask(groundLayer);
-
-        int count = rb.Cast(Vector2.down, filter, castResults, snapDistance);
-
-        groundHit = default;
-        for (int i = 0; i < count; i++)
-        {
-            RaycastHit2D h = castResults[i];
-            if (Vector2.Angle(h.normal, Vector2.up) > maxSlope) continue;
-            if (!groundHit || h.distance < groundHit.distance) groundHit = h;
-        }
-
-        bool touching = groundHit && groundHit.distance <= skin;
-        bool canSnap = groundHit && wasGrounded && !isJumping;
-
-        isGrounded = touching || canSnap;
-
-        if (canSnap && !touching)
-        {
-            rb.position += Vector2.down * (groundHit.distance - skin * 0.5f);
-        }
-
-        animator.SetBool("isGrounded", isGrounded);
-
-        return isGrounded;
     }
 
     private void Flip(float moveInput)
