@@ -10,9 +10,6 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float airAcceleration = 20f;
     [SerializeField] private float airDeceleration = 8f;
     [SerializeField] private float normalGravity = 3f;
-    [SerializeField] private Transform attackPoint;
-    [SerializeField] private Vector2 attackSize = new Vector2(0.8f, 1.2f);
-    [SerializeField] private LayerMask enemyLayer;
 
     public Animator animator;
 
@@ -60,12 +57,6 @@ public class PlayerController : MonoBehaviour
                 canAirJump = false;
             }
         }
-
-        if (Input.GetMouseButtonDown(0))
-        {
-            animator.SetTrigger("Attack");
-        }
-
     }
 
     void FixedUpdate()
@@ -128,12 +119,5 @@ public class PlayerController : MonoBehaviour
         isJumping = true;
         animator.SetBool("isJumping", true);
         rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
-    }
-
-    private void OnDrawGizmosSelected()
-    {
-        if (attackPoint == null) return;
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireCube(attackPoint.position, attackSize);
     }
 }
