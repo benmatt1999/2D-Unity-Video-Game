@@ -1,15 +1,8 @@
 fileFormatVersion: 2
-guid: 11ba2ffc119f44a4db87278fdd17e1c2
+guid: 961582d8d97ae444389507c0b24e611b
 NativeFormatImporter:
   externalObjects: {}
   mainObjectFileID: 7400000
   userData: 
   assetBundleName: 
   assetBundleVariant: 
-AssetOrigin:
-  serializedVersion: 1
-  productId: 195707
-  packageName: Warrior Free Asset
-  packageVersion: 1.0
-  assetPath: Assets/Warrior free set/Aniamtion/Edge-Idle.anim
-  uploadId: 434362

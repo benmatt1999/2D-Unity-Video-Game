@@ -1,15 +1,8 @@
 fileFormatVersion: 2
-guid: aa852921ab2da0f4aaee7788209e4ca4
+guid: 63a68ecd5c3cc574cbd1b590b963f885
 NativeFormatImporter:
   externalObjects: {}
   mainObjectFileID: 7400000
   userData: 
   assetBundleName: 
   assetBundleVariant: 
-AssetOrigin:
-  serializedVersion: 1
-  productId: 195707
-  packageName: Warrior Free Asset
-  packageVersion: 1.0
-  assetPath: Assets/Warrior free set/Aniamtion/Run.anim
-  uploadId: 434362

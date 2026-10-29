@@ -37,7 +37,6 @@ public class PlayerController : MonoBehaviour
         playerHalfHeight = spriteRenderer.bounds.extents.y;
     }
 
-    // Update is called once per frame
     void Update()
     {
         horizontalInput = Input.GetAxisRaw("Horizontal");

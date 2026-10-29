@@ -4,17 +4,15 @@ using UnityEngine;
 public class Enemy : MonoBehaviour
 {
     [SerializeField] private Animator anim;
-    [SerializeField] protected int health = 1;
+    [SerializeField] protected int health;
+    protected Collider2D hitbox;
+    protected int enemyDamage = 1;
     protected bool isDead = false;
 
-    void Update()
-    {
-        
-    }
-
-    private void Awake()
+    protected virtual void Awake()
     {
         anim = GetComponent<Animator>();
+        hitbox = GetComponent<Collider2D>();
     }
 
     public void TakeDamage(int amount)
@@ -28,12 +26,30 @@ public class Enemy : MonoBehaviour
         }
     }
 
+    private void OnTriggerStay2D(Collider2D hit)
+    {
+        PlayerHealth playerHealth = hit.GetComponent<PlayerHealth>();
+        if (playerHealth != null)
+        {
+            playerHealth.TakeDamage(enemyDamage);
+        }
+    }
+
     protected virtual void Die()
     {
         isDead = true;
+        if (hitbox != null)
+        {
+            hitbox.enabled = false;
+        }
         if (anim != null)
         {
             anim.SetTrigger("DeathTrigger");
         }
+    }
+
+    public void DestroySelf()
+    {
+        Destroy(gameObject);
     }
 }

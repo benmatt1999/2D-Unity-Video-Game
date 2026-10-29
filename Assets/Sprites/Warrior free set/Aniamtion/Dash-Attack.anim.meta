@@ -1,15 +1,8 @@
 fileFormatVersion: 2
-guid: 11822cbe6f25108459fd2ef98cc9255c
+guid: 6fdef2b518c6fdf41ab0fb1fb8bcc580
 NativeFormatImporter:
   externalObjects: {}
   mainObjectFileID: 7400000
   userData: 
   assetBundleName: 
   assetBundleVariant: 
-AssetOrigin:
-  serializedVersion: 1
-  productId: 195707
-  packageName: Warrior Free Asset
-  packageVersion: 1.0
-  assetPath: Assets/Warrior free set/Aniamtion/Dash-Attack.anim
-  uploadId: 434362
