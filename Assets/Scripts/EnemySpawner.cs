@@ -3,7 +3,8 @@ using UnityEngine;
 
 public class EnemySpawner : MonoBehaviour
 {
-    [SerializeField] private GameObject enemyPrefab;
+    [SerializeField] private GameObject batprefab;
+    [SerializeField] private GameObject zombiePrefab;
     [SerializeField] private Transform player;
     [SerializeField] private LayerMask groundLayer;
     private float minSpawn = 0.1f;
@@ -18,7 +19,7 @@ public class EnemySpawner : MonoBehaviour
 
     private void Start()
     {
-        Spawn();
+        // Spawn();
         spawnTimer = spawnInterval;
     }
 
@@ -27,7 +28,7 @@ public class EnemySpawner : MonoBehaviour
         spawnTimer -= Time.deltaTime;
         if (spawnTimer <= 0)
         {
-            Spawn();
+            // Spawn();
             spawnTimer = spawnInterval;
             spawnInterval *= 0.95f;
         }
@@ -37,7 +38,7 @@ public class EnemySpawner : MonoBehaviour
     {
         Vector3 spawnPos = getSpawnPos();
 
-        Instantiate(enemyPrefab, spawnPos, Quaternion.identity);
+        Instantiate(batprefab, spawnPos, Quaternion.identity);
         numOfBats++;
     }
 

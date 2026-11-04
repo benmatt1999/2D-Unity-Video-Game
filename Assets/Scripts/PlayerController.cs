@@ -45,8 +45,6 @@ public class PlayerController : MonoBehaviour
 
         animator.SetFloat("Speed", Mathf.Abs(horizontalInput));
 
-        Debug.DrawRay(transform.position, Vector2.down * (playerHalfHeight + 0.2f), Color.red);
-
         if (Input.GetButtonDown("Jump") && (groundCheck.IsGrounded || canAirJump))
         {
             Jump();

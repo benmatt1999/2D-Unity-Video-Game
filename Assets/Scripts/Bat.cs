@@ -2,42 +2,30 @@ using UnityEngine;
 
 public class Bat : Enemy
 {
-    [SerializeField] private float speed = 2f;
-    [SerializeField] private LayerMask groundLayer;
-    private Rigidbody2D rb;
-    private Transform player;
     private float skin = 0.01f;
     protected override void Awake()
     {
         base.Awake();
-        rb = GetComponent<Rigidbody2D>();
     }
 
-    void Start()
-    {
-        GameObject playerObject = GameObject.FindGameObjectWithTag("Player");
-        if (playerObject != null)
-        {
-            player = playerObject.transform;
-        }
-    }
     void FixedUpdate()
     {
         if (isDead || player == null) return;
 
-        Vector2 currentPos = rb.position;
-        Vector2 newPos = Vector2.MoveTowards(currentPos, player.position, speed * Time.fixedDeltaTime);
-        Vector2 move = newPos - currentPos;
+        Vector2 move = getMove();
         rb.MovePosition(GetSafePosition(currentPos, move));
 
         float dx = currentPos.x - player.position.x;
-        if (Mathf.Abs(dx) > 0.1f)
-        {
-            Vector3 scale = transform.localScale;
-            scale.x = Mathf.Abs(scale.x) * Mathf.Sign(dx);
-            transform.localScale = scale;
-        }
+        FaceTowards(dx);
 
+    }
+
+    private Vector2 getMove()
+    {
+        currentPos = rb.position;
+        newPos = Vector2.MoveTowards(currentPos, player.position, speed * Time.fixedDeltaTime);
+        Vector2 move = newPos - currentPos;
+        return move;
     }
 
     private Vector2 GetSafePosition(Vector2 currentPos, Vector2 move)
