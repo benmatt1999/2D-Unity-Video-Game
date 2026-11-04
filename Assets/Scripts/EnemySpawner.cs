@@ -3,8 +3,7 @@ using UnityEngine;
 
 public class EnemySpawner : MonoBehaviour
 {
-    [SerializeField] private GameObject batprefab;
-    [SerializeField] private GameObject zombiePrefab;
+    [SerializeField] private GameObject[] enemyPrefabs;
     [SerializeField] private Transform player;
     [SerializeField] private LayerMask groundLayer;
     private float minSpawn = 0.1f;
@@ -14,8 +13,6 @@ public class EnemySpawner : MonoBehaviour
 
     private float spawnInterval = 5f;
     private float spawnTimer;
-
-    private int numOfBats = 0;
 
     private void Start()
     {
