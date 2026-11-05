@@ -3,43 +3,56 @@ using UnityEngine;
 
 public class EnemySpawner : MonoBehaviour
 {
-    [SerializeField] private GameObject[] enemyPrefabs;
+    [System.Serializable]
+    public class SpawnEntry
+    {
+        public GameObject enemyPrefab;
+        public float interval = 2f;
+        public float minInterval = 0.5f;
+        public float rampFactor = 0.95f;
+        public bool spawnsOnGround;
+
+        [System.NonSerialized] public float timer;
+    }
+
+    [SerializeField] private SpawnEntry[] spawnEntries;
+
     [SerializeField] private Transform player;
     [SerializeField] private LayerMask groundLayer;
     private float minSpawn = 0.1f;
     private float maxSpawn = 0.9f;
     private float hitRadius = 0.3f;
-    private float minDistToPlayer = 1.8f;
-
-    private float spawnInterval = 5f;
-    private float spawnTimer;
+    private float minDistToPlayer = 2.8f;
+    private float groundOffset = 1f;
 
     private void Start()
     {
-        // Spawn();
-        spawnTimer = spawnInterval;
+        foreach (SpawnEntry entry in spawnEntries)
+        {
+            entry.timer = entry.interval;
+        }
     }
 
     private void Update()
     {
-        spawnTimer -= Time.deltaTime;
-        if (spawnTimer <= 0)
+        foreach (SpawnEntry entry in spawnEntries)
         {
-            // Spawn();
-            spawnTimer = spawnInterval;
-            spawnInterval *= 0.95f;
+            entry.timer -= Time.deltaTime;
+            if (entry.timer > 0) continue;
+
+            Vector3 validSpawn = getSpawnPos(entry);
+            Spawn(entry, validSpawn);
+            entry.interval = Mathf.Max(entry.minInterval, entry.interval * entry.rampFactor);
+            entry.timer = entry.interval;
         }
     }
 
-    public void Spawn()
+    public void Spawn(SpawnEntry enemyPrefab, Vector3 spawnPos)
     {
-        Vector3 spawnPos = getSpawnPos();
-
-        Instantiate(batprefab, spawnPos, Quaternion.identity);
-        numOfBats++;
+        Instantiate(enemyPrefab.enemyPrefab, spawnPos, Quaternion.identity);
     }
 
-    private Vector3 getSpawnPos()
+    private Vector3 getSpawnPos(SpawnEntry entry)
     {
         bool validSpawn = false;
         Vector3 spawnPos = new Vector3(0f, 0f, 0f);
@@ -52,6 +65,13 @@ public class EnemySpawner : MonoBehaviour
 
             Vector3 worldPos = new Vector3(xPos, yPos, 10f);
             spawnPos = Camera.main.ViewportToWorldPoint(worldPos);
+
+            if (entry.spawnsOnGround)
+            {
+                RaycastHit2D floor = Physics2D.Raycast(spawnPos, Vector2.down, 20f, groundLayer);
+                if (!floor) continue;
+                spawnPos = floor.point + Vector2.up * groundOffset;
+            }
 
             bool groundSpawn = Physics2D.OverlapCircle(spawnPos, hitRadius, groundLayer) != null;
             bool tooCloseToPlayer = Vector2.Distance(player.position, spawnPos) < minDistToPlayer;

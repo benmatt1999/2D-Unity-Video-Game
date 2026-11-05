@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 8015881309170186290}
   - component: {fileID: 2643148553989666045}
   - component: {fileID: 506800973762143671}
-  - component: {fileID: 214887054443216549}
   - component: {fileID: 7445196183225754140}
+  - component: {fileID: 214887054443216549}
   - component: {fileID: 5275360840327914777}
   m_Layer: 7
   m_Name: Bat
@@ -119,6 +119,24 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &7445196183225754140
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5840038882737305133}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c197eafba994e43418a68be7f9f99bfb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  anim: {fileID: 506800973762143671}
+  health: 1
+  speed: 2
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 64
 --- !u!70 &214887054443216549
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -156,24 +174,6 @@ CapsuleCollider2D:
   m_Offset: {x: -0.6381162, y: 2.4568594}
   m_Size: {x: 3.4776957, y: 3.8519802}
   m_Direction: 0
---- !u!114 &7445196183225754140
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5840038882737305133}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c197eafba994e43418a68be7f9f99bfb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: '::'
-  anim: {fileID: 506800973762143671}
-  health: 1
-  speed: 2
-  groundLayer:
-    serializedVersion: 2
-    m_Bits: 64
 --- !u!50 &5275360840327914777
 Rigidbody2D:
   serializedVersion: 5
