@@ -1,17 +1,23 @@
-using System.Threading;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class PlayerHealth : MonoBehaviour
 {
     [SerializeField] private float invincibilityTime = 3f;
+    [SerializeField] private int maxHealth = 3;
     private float invincibilityTimer;
-    private int playerHealth = 3;
+    private int currentHealth = 3;
     private Animator anim;
+
+    public int CurrentHealth => currentHealth;
+    public int MaxHealth => maxHealth;
+
+    public event System.Action OnHealthChanged;
 
     private void Awake()
     {
         anim = GetComponent<Animator>();
+        currentHealth = maxHealth;
     }
 
     void Update()
@@ -26,11 +32,14 @@ public class PlayerHealth : MonoBehaviour
     {
         if (invincibilityTimer > 0f) return;
 
-        playerHealth -= damage;
+        Debug.Log("TakeDamage called");
+
+        currentHealth -= damage;
         anim.SetTrigger("tookHit");
         invincibilityTimer = invincibilityTime;
+        OnHealthChanged?.Invoke();
 
-        if (playerHealth <= 0)
+        if (currentHealth <= 0)
         {
             PlayerDie();
         } 

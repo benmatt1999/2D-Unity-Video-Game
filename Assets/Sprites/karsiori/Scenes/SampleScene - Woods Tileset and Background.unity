@@ -3241,19 +3241,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemySpawner
   spawnEntries:
   - enemyPrefab: {fileID: 5840038882737305133, guid: f4602107911282542bfd45e2bf6bb648, type: 3}
-    interval: 3
+    interval: 10
     minInterval: 0.5
-    rampFactor: 0.95
+    rampFactor: 0.99
     spawnsOnGround: 0
   - enemyPrefab: {fileID: 6981722426433150837, guid: c7ba699d54ffef146a65ae69b8cb2961, type: 3}
-    interval: 2
+    interval: 15
     minInterval: 0.5
-    rampFactor: 0.95
+    rampFactor: 0.99
     spawnsOnGround: 0
   - enemyPrefab: {fileID: 5284643900520674695, guid: 027b1c9cd4f5b4344995f03cc92fd18e, type: 3}
-    interval: 2
+    interval: 12
     minInterval: 0.5
-    rampFactor: 0.95
+    rampFactor: 0.99
     spawnsOnGround: 1
   player: {fileID: 100185048}
   groundLayer:

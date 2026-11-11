@@ -138,6 +138,7 @@ MonoBehaviour:
   groundLayer:
     serializedVersion: 2
     m_Bits: 64
+  scoreValue: 200
   edgeCheckDist: 0.1
   edgeCheckDepth: 1
   landingCheckDepth: 2

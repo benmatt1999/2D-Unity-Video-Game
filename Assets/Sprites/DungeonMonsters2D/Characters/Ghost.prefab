@@ -137,6 +137,7 @@ MonoBehaviour:
   groundLayer:
     serializedVersion: 2
     m_Bits: 64
+  scoreValue: 150
 --- !u!70 &5759043414139044769
 CapsuleCollider2D:
   m_ObjectHideFlags: 0

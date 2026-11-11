@@ -7,6 +7,7 @@ public class Enemy : MonoBehaviour
     [SerializeField] protected int health;
     [SerializeField] protected int speed;
     [SerializeField] protected LayerMask groundLayer;
+    [SerializeField] protected int scoreValue;
     protected Rigidbody2D rb;
     protected Collider2D hitbox;
     protected Vector2 currentPos;
@@ -72,6 +73,7 @@ public class Enemy : MonoBehaviour
         {
             anim.SetTrigger("DeathTrigger");
         }
+        ScoreScript.Instance.AddScore(scoreValue);
     }
 
     private void EnableStun()
